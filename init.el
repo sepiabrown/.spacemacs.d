@@ -47,6 +47,7 @@ values."
      emacs-lisp
      git
      markdown
+     ;;ipython-notebook
      (org :variables
           ;org-format-latex-options '(:scale 5.0)
           org-enable-github-support t
@@ -56,7 +57,7 @@ values."
             shell-default-height 30
             shell-default-position 'bottom)
      ;spell-checking
-     syntax-checkinasdf
+     ;syntax-checking
      version-control
      (keyboard-layout :variable
                       kl-layout 'dvorak)
@@ -72,20 +73,20 @@ values."
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(
-                                      (yasnippet :location (recipe :fetcher github :repo "sepiabrown/yasnippet")); joaotavora/yasnippet Zetagon/yasnippet
+                                      ;(yasnippet :location (recipe :fetcher github :repo "sepiabrown/yasnippet")); joaotavora/yasnippet Zetagon/yasnippet
                                       org-fragtog
                                       xwidget
                                       posframe
-                                      webkit-color-picker
+                                      ;webkit-color-picker
                                       add-hooks
-                                      (webkit-katex-render
-                                       :location local
-                                      )
+                                      ;(webkit-katex-render :location (recipe :fetcher github :repo "sepiabrown/emacs-webkit-katex-render"))
+                                      (webkit-katex-render :location local)
                                       )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
    dotspacemacs-excluded-packages '(
+                                    ;yasnippet
                                     org-projectile
                                     )
    ;; Defines the behaviour of Spacemacs when installing packages.
@@ -397,9 +398,6 @@ you should place your code here."
   ;(add-hook 'post-command-hook #'my-yas-try-expanding-math-snippets)
   ;(setq yas-wrap-around-region nil)
   (setq posframe-mouse-banish nil)
-  (use-package webkit-color-picker
-  :ensure t
-  :bind (("C-c C-p" . webkit-color-picker-show)))
   ;(setq-default evil-escape-delay 0.1)
   (use-package webkit-katex-render :init)
   ;  :load-path "~/"
