@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
-# name: inlineMath
+# name: inlineMath_mk
 # key: mk
 # condition : 'auto
+# \\($1\\)$0
 # --
-\\($1\\)$0
+$$1$$0

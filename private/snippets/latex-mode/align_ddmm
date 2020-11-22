@@ -1,9 +1,9 @@
 # -*- mode: snippet -*-
-# name: align
+# name: align_ddmm
 # key: ddmm
 # condition: 'auto
 # --
 \begin{${1:align*}}
-	$2
+  $2
 \end{$1}
 $0

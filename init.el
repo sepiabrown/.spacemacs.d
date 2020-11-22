@@ -47,7 +47,10 @@ values."
      emacs-lisp
      git
      markdown
-     ;;ipython-notebook
+     (ipython-notebook :variables
+                       ein:jupyter-server-command "jupyter-notebook"
+                       ein:jupyter-server-use-subcommand nil
+                       )
      (org :variables
           ;org-format-latex-options '(:scale 5.0)
           org-enable-github-support t
@@ -73,12 +76,13 @@ values."
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(
-                                      ;(yasnippet :location (recipe :fetcher github :repo "sepiabrown/yasnippet")); joaotavora/yasnippet Zetagon/yasnippet
+                                      (yasnippet :location (recipe :fetcher github :repo "sepiabrown/yasnippet")); joaotavora/yasnippet Zetagon/yasnippet
                                       org-fragtog
                                       xwidget
+                                      (ox-ipynb :location (recipe :fetcher github :repo "jkitchin/ox-ipynb"))
                                       posframe
                                       ;webkit-color-picker
-                                      add-hooks
+                                      add-hooks ; wrong latex rendering can break hooks!!!!
                                       ;(webkit-katex-render :location (recipe :fetcher github :repo "sepiabrown/emacs-webkit-katex-render"))
                                       (webkit-katex-render :location local)
                                       )
@@ -399,6 +403,7 @@ you should place your code here."
   ;(setq yas-wrap-around-region nil)
   (setq posframe-mouse-banish nil)
   ;(setq-default evil-escape-delay 0.1)
+  (use-package ox-ipynb :init)
   (use-package webkit-katex-render :init)
   ;  :load-path "~/"
   ;  :commands webkit-katex-render-mode)
@@ -406,6 +411,10 @@ you should place your code here."
   (with-eval-after-load 'org
      (plist-put org-format-latex-options :scale 2.0)
   )
+  ;(add-hook 'org-mode-hook 'visual-line-mode)
+  ;(add-hook 'org-mode-hook 'org-fragtog-mode)
+  ;(add-hook 'org-mode-hook 'webkit-katex-render-mode)
+  ;(add-hook 'org-mode-hook 'org-latex-preview)
   (add-hooks '((org-mode . (visual-line-mode org-fragtog-mode webkit-katex-render-mode org-latex-preview))))
   (setq org-todo-keywords
     '((sequence "TODO(t!)" "NEXT(n!)" "DOINGNOW(d!)" "BLOCKED(b!)" "TODELEGATE(g!)" "DELEGATED(D!)" "FOLLOWUP(f!)" "TICKLE(T!)" "|" "CANCELLED(c!)" "DONE(F!)")))
@@ -462,8 +471,8 @@ This function is called at the very end of Spacemacs initialization."
  '(evil-want-Y-yank-to-eol nil)
  '(org-agenda-files nil)
  '(package-selected-packages
-   (quote
-    (company-quickhelp ox-reveal ox-gfm yasnippet-snippets xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help pdf-tools tablist org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download htmlize gnuplot intero flycheck hlint-refactor hindent helm-hoogle haskell-snippets company-ghci company-ghc ghc haskell-mode company-cabal cmm-mode helm-company helm-c-yasnippet fuzzy company-statistics company-auctex company auto-yasnippet yasnippet auctex ac-ispell auto-complete org-grep reverse-im evil-dvorak ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra lv hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
+   '(company-quickhelp ox-reveal ox-gfm yasnippet-snippets xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help pdf-tools tablist org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download htmlize gnuplot intero flycheck hlint-refactor hindent helm-hoogle haskell-snippets company-ghci company-ghc ghc haskell-mode company-cabal cmm-mode helm-company helm-c-yasnippet fuzzy company-statistics company-auctex company auto-yasnippet yasnippet auctex ac-ispell auto-complete org-grep reverse-im evil-dvorak ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra lv hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))
+ '(safe-local-variable-values '((eval progn (org-num-mode) (org-fragtog-mode)))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
